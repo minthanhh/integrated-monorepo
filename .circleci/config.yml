@@ -1,21 +1,25 @@
 version: 2.1
-
 orbs:
   nx: nrwl/nx@1.6.2
-
 jobs:
-  checks:
+  build:
     docker:
-      - image: cimg/node:lts-browsers
+      - image: cimg/node:14.17-browsers
+    environment:
+      MAIN_BRANCH_NAME: main
     steps:
       - checkout
       - run:
-          name: Install dependencies
           command: pnpm install --frozen-lockfile
-      - nx/set-shas
+          name: Install dependencies
+      - nx/set-shas:
+          allow-on-hold-workflow: true
+          error-on-no-successful-workflow: true
+          main-branch-name: main
+          workflow-name: nx-pipeline
       - run:
+          command: pnpm nx affected --target=build --base=$NX_BASE
           name: Run Builds
-          command: nx affected --target=build --base=$NX_BASE --parallel
       - run:
+          command: pnpm nx affected --target=test --base=$NX_BASE
           name: Run Unit Tests
-          command: nx affected --target=test --base=$NX_BASE --parallel
