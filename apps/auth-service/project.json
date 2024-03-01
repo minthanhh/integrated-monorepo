@@ -15,7 +15,30 @@
           "buildTarget": "auth-service:build:development"
         },
         "production": {
-          "buildTarget": "auth-service:build:production"
+          "buildTarget": "auth-service:build:production",
+          "runBuildTargetDependencies": true
+        }
+      }
+    },
+    "docker": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/auth-service/Dockerfile . -t hoominth/test-auth-service"
+    },
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": ["build"],
+      "options": {
+        "engine": "docker",
+        "metadata": {
+          "images": ["auth-service"],
+          "load": true,
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix=sha-"
+          ]
         }
       }
     }

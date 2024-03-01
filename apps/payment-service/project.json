@@ -1,0 +1,24 @@
+{
+  "name": "payment-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/payment-service/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "payment-service:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "payment-service:build:development"
+        },
+        "production": {
+          "buildTarget": "payment-service:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

@@ -14,7 +14,17 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@intergrated-monorepo/generate-package-json": [
+        "libs/generate-package-json/src/index.ts"
+      ],
+      "@intergrated-monorepo/generate-package-plugin": [
+        "libs/generate-package-plugin/src/index.ts"
+      ],
+      "@intergrated-monorepo/generator-package": [
+        "generator-package/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

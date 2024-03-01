@@ -1,0 +1,24 @@
+version: 2.1
+
+orbs:
+  nx: nrwl/nx@1.6.2
+
+jobs:
+  main:
+    docker:
+      - image: cimg/node:lts-browsers
+    steps:
+      - checkout
+      # This line enables distribution
+      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
+      - run: npx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci"
+      - run: npm ci
+
+      - nx/set-shas
+
+      - run: npx nx-cloud record -- nx format:check
+      - run: npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint test build e2e-ci
+workflows:
+  build:
+    jobs:
+      - main
