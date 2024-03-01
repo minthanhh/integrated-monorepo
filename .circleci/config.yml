@@ -1,25 +1,24 @@
 version: 2.1
+
 orbs:
   nx: nrwl/nx@1.6.2
+
 jobs:
-  build:
+  main:
     docker:
-      - image: cimg/node:14.17-browsers
-    environment:
-      MAIN_BRANCH_NAME: main
+      - image: cimg/node:lts-browsers
     steps:
       - checkout
-      - run:
-          command: pnpm install --frozen-lockfile
-          name: Install dependencies
-      - nx/set-shas:
-          allow-on-hold-workflow: true
-          error-on-no-successful-workflow: true
-          main-branch-name: main
-          workflow-name: nx-pipeline
-      - run:
-          command: pnpm nx affected --target=build --base=$NX_BASE
-          name: Run Builds
-      - run:
-          command: pnpm nx affected --target=test --base=$NX_BASE
-          name: Run Unit Tests
+      # This line enables distribution
+      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
+      - run: npx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci"
+      - run: npm ci
+
+      - nx/set-shas
+
+      - run: npx nx-cloud record -- nx format:check
+      - run: npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint test build e2e-ci
+workflows:
+  build:
+    jobs:
+      - main
