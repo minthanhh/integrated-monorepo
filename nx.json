@@ -15,7 +15,6 @@
     "sharedGlobals": []
   },
   "plugins": [
-    "nx/plugins/package-json",
     {
       "plugin": "@nx/webpack/plugin",
       "options": {
@@ -35,6 +34,16 @@
       "options": {
         "targetName": "test"
       }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "serveStaticTargetName": "serve-static"
+      }
     }
   ],
   "nxCloudAccessToken": "MDhkOGJhOTgtNWU3My00ZDQ3LTk5ZGMtYjgzYTc5YzFjMTJjfHJlYWQtd3JpdGU=",
@@ -43,6 +52,23 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    }
+  },
+  "generators": {
+    "@nx/react": {
+      "application": {
+        "babel": true,
+        "style": "css",
+        "linter": "eslint",
+        "bundler": "vite"
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
     }
   }
 }

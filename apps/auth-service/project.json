@@ -22,7 +22,9 @@
     },
     "docker": {
       "dependsOn": ["build"],
-      "command": "docker build -f apps/auth-service/Dockerfile . -t hoominth/test-auth-service"
+      "command": "docker build -f apps/auth-service/Dockerfile . -t hoominth/auth-service",
+      "cache": true,
+      "options": {}
     }
   },
   "tags": []

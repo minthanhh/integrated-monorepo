@@ -1,0 +1,13 @@
+{
+  "name": "web-main",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/web-main/src",
+  "projectType": "application",
+  "targets": {
+    "docker": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/web-main/Dockerfile . -t web-main"
+    }
+  },
+  "tags": []
+}

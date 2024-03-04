@@ -1,0 +1,28 @@
+apiVersion: skaffold/v4beta9
+kind: Config
+metadata:
+  name: monorepos-application
+deploy:
+  kubeContext: minikube
+  kubectl:
+    remoteManifests:
+      - infastructure/k8s/auth-service-depl.yaml
+      - infastructure/k8s/ingress-srv.yaml
+build:
+  local:
+    push: false
+    useDockerCLI: true
+  artifacts:
+    - image: hoominth/auth-service
+      context: .
+      docker:
+        dockerfile: ./apps/auth-service/Dockerfile
+        target: development
+      sync:
+        manual:
+          - src: './apps/auth-service/src/**/*.ts'
+            dest: .
+manifests:
+  rawYaml:
+    - infastructure/k8s/auth-service-depl.yaml
+    - infastructure/k8s/ingress-srv.yaml
