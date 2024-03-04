@@ -42,6 +42,6 @@ jobs:
           echo "HEAD: ${{ env.NX_HEAD }}"
       - name: Check list
         run: |
-          echo for app in $(nx list);
+          echo for app in $(npx nx list);
       - run: pnpm exec nx-cloud record -- nx format:check
       - run: pnpm exec nx affected -t lint test build
